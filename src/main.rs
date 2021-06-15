@@ -1,8 +1,20 @@
 use yew::prelude::*;
+use yew_router::prelude::*;
 
-#[derive(Debug)]
-pub struct Model;
-impl Component for Model {
+mod pages;
+use self::pages::*;
+
+#[derive(yew_router::Switch, Clone)]
+pub enum MainRoute {
+    #[to = "/blog"]
+    Blog,
+    #[to = "/"]
+    Home,
+}
+
+pub struct Main;
+
+impl Component for Main {
     type Message = ();
     type Properties = ();
 
@@ -20,14 +32,32 @@ impl Component for Model {
 
     fn view(&self) -> Html {
         html! {
-            <main>
-                <img class="profile-picture" src="images/avatar.jpg" alt="ShironCat's avatar" />
-                <h1>{ "Hello, World!" }</h1>
-            </main>
+            <>
+                <header class="navbar">
+                    <ul>
+                        <li>
+                            <RouterAnchor<MainRoute> route=MainRoute::Home><a>{"Home"}</a></RouterAnchor<MainRoute>>
+                        </li>
+                        <li>
+                            <RouterAnchor<MainRoute> route=MainRoute::Blog><a>{"Blog"}</a></RouterAnchor<MainRoute>>
+                        </li>
+                    </ul>
+                </header>
+                <div class="main">
+                    <Router<MainRoute, ()>
+                        render = Router::render(|switch: MainRoute| {
+                            match switch {
+                                MainRoute::Home => html!{ <Home/> },
+                                MainRoute::Blog => html!{ <Blog/> },
+                            }
+                        })
+                    />
+                </div>
+            </>
         }
     }
 }
 
 fn main() {
-    yew::start_app::<Model>();
+    yew::start_app::<Main>();
 }

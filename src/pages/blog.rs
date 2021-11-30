@@ -21,7 +21,7 @@ impl Component for Blog {
     fn view(&self) -> Html {
         html! {
             <>
-                <h1>{ "Blog" }</h1>
+                <img src="https://http.cat/404.jpg" />
             </>
         }
     }
